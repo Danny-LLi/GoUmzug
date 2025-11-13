@@ -11,8 +11,7 @@ This **high-performance Single Page Application (SPA)** is fully **responsive**,
 
 ## 🚀 **Live Demo & Overview**
 
-Experience a **next-generation moving service website** crafted for both **German clients** and **international visitors**.
-It features smooth animations, lightning-fast load times, and a clean, trustworthy design that reflects professionalism and reliability.
+Experience a **next-generation moving service website** This project is a modern web application for GoUmzug, designed with a clean, professional aesthetic, seamless animations, and lightning-fast performance — all crafted to deliver an exceptional and trustworthy user experience.
 
 ---
 
