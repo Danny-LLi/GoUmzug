@@ -22,10 +22,10 @@ Enjoy the **full widescreen experience** — smooth navigation, fluid layouts, a
 Perfectly optimized for **4K and HD monitors**, ensuring clarity and refinement at every pixel.
 
 <p align="center">
-<video src="[YOUR_DESKTOP_VIDEO_URL_HERE]"
+<video src="https://github.com/user-attachments/assets/e6e336a7-8f56-44b6-94c9-17a6951ed397"
 width="800"
 controls
-poster="[URL_TO_DESKTOP_POSTER_IMAGE_HERE]"
+poster="https://github.com/user-attachments/assets/61db5c8a-0988-4fe3-9db4-a3be250853ca"
 style="border-radius:14px; box-shadow:0 0 25px rgba(0,0,0,0.45);">
 Your browser does not support the video tag.
 </video>
