@@ -25,7 +25,7 @@ Perfectly optimized for **4K and HD monitors**, ensuring clarity and refinement 
 <video src="https://github.com/user-attachments/assets/e6e336a7-8f56-44b6-94c9-17a6951ed397"
 width="800"
 controls
-poster="https://github.com/user-attachments/assets/61db5c8a-0988-4fe3-9db4-a3be250853ca"
+poster=""
 style="border-radius:14px; box-shadow:0 0 25px rgba(0,0,0,0.45);">
 Your browser does not support the video tag.
 </video>
@@ -39,10 +39,10 @@ The design transitions flawlessly to mobile — fast, touch-friendly, and visual
 From fluid scrolling to responsive grids, the **mobile view** guarantees an exceptional on-the-go experience.
 
 <p align="center">
-<video src="[YOUR_MOBILE_VIDEO_URL_HERE]"
+<video src="https://github.com/user-attachments/assets/61db5c8a-0988-4fe3-9db4-a3be250853ca"
 width="350"
 controls
-poster="[URL_TO_MOBILE_POSTER_IMAGE_HERE]"
+poster=""
 style="border-radius:12px; box-shadow:0 0 15px rgba(0,0,0,0.35); border:1px solid #ddd;">
 Your browser does not support the video tag.
 </video>
