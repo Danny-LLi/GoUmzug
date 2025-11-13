@@ -1,0 +1,108 @@
+# Block direct access to specific files
+# This is a stronger rule to ensure no one can access defaultt.php (assuming this is a legacy or sensitive file; remove if not needed)
+<Files "defaultt.php">
+    Order deny,allow
+    Deny from all
+</Files>
+
+# Enhanced Security Best Practices
+<IfModule mod_rewrite.c>
+    # Disables directory browsing to prevent listing of files
+    Options -Indexes
+
+    # Deny access to a broader range of sensitive files and directories
+    # This includes hidden files, config files, backups, and common development artifacts
+    <FilesMatch "^(\.|README|LICENSE|composer\.json|package\.json|yarn\.lock|webpack\.config\.js|gulpfile\.js|Gruntfile\.js|\.bak|\.swp|\.save|\.old|\.dist|\.gitkeep|\.gitignore|\.DS_Store|\.env\.example|\.editorconfig|\.eslint|\.prettier|\.travis|\.circleci|\.docker|\.vscode|\.idea|\.svn|\.bzr|\.hg)$">
+        Order deny,allow
+        Deny from all
+    </FilesMatch>
+
+    # Block access to all dotfiles (hidden files) more aggressively
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^\.  - [F,L]
+
+    # Prevent access to version control directories
+    RedirectMatch 403 /\.git
+    RedirectMatch 403 /\.svn
+    RedirectMatch 403 /\.hg
+    RedirectMatch 403 /\.bzr
+    RedirectMatch 403 /CVS
+
+    # Disable unnecessary HTTP methods for resilience against exploits (allow only GET, HEAD, POST for a front-end app)
+    <LimitExcept GET HEAD POST>
+        Order deny,allow
+        Deny from all
+    </LimitExcept>
+</IfModule>
+
+# Add Security Headers for Enhanced Resilience
+# These help mitigate common web vulnerabilities like XSS, clickjacking, etc.
+<IfModule mod_headers.c>
+    # Enforce HTTPS with Strict Transport Security (HSTS) - adjust max-age as needed (e.g., 1 year here)
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload" env=HTTPS
+
+    # Prevent MIME type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Prevent clickjacking by disallowing framing
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Control referrer information
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Basic Content Security Policy (CSP) tailored for a React front-end
+    # Customize sources based on your app's needs (e.g., add domains for fonts, images, APIs)
+    # This is a starting point; test thoroughly to avoid breaking the app
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'self';"
+
+    # Hide server information to reduce fingerprinting
+    ServerSignature Off
+    Header always unset Server
+    Header always unset X-Powered-By
+</IfModule>
+
+# Force HTTPS Redirect (for resilience in transit)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# React App Fallback Routing
+# Optimized for a pure React front-end: ensures all routes fallback to index.html without interfering with static assets
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Prevent rewriting for index.html itself to avoid loops
+    RewriteRule ^index\.html$ - [L]
+
+    # Prevent rewrite for existing files (e.g., JS bundles, CSS, images) and directories
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-l  # Also check for symlinks if applicable
+
+    # Fallback to index.html for client-side routing
+    RewriteRule ^(.*)$ /index.html [L]
+</IfModule>
+
+# Error Handling for Resilience
+# Custom error pages can be added here if needed, but for now, block error document exposure
+ErrorDocument 403 "Access Denied"
+ErrorDocument 404 /index.html  # Fallback to React for 404s to handle in-app
+
+# Compression and Caching (optional but adds resilience/performance)
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript application/javascript application/json
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 month"
+    ExpiresByType image/jpeg "access plus 1 month"
+</IfModule>
